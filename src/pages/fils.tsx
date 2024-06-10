@@ -32,7 +32,7 @@ const Fils = () => {
     const blueCount = colorValues.filter((color) => color === "blue").length;
     const redCount = colorValues.filter((color) => color === "red").length;
     const yellowCount = colorValues.filter((color) => color === "yellow").length;
-    const whiteCount = colorValues.filter((color) => color === "white").length;
+    //const whiteCount = colorValues.filter((color) => color === "white").length;
     const blackCount = colorValues.filter((color) => color === "black").length;
 
     const evenOrOdd = (num: number) => (num % 2 === 0 ? "even" : "odd");
@@ -109,6 +109,36 @@ const Fils = () => {
     return elt;
   };
 
+  const DisplayInput = () => {
+    if (nbr === 3 || nbr === 0) {
+      return null;
+    }
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          height: 100,
+          width: 300,
+        }}
+      >
+        <p>Entrez le dernier numéro de série de la bombe</p>
+        <input
+          style={{textAlign: "center" as const,
+            borderWidth: 2,
+            borderColor: "black",
+            width: "50%",}}
+          value={textInput}
+          onChange={(e) => {
+            setTextInput(e.target.value);
+          }}
+        />
+      </div>
+    );
+  };
+
   const ColorInputs = (props: { setColorValue: (colorName: string) => void }) => {
     return (
       <div
@@ -158,6 +188,7 @@ const Fils = () => {
       >
         {handleFils()}
       </div>
+      <DisplayInput />
       <CutWires nbr={nbr} colorValues={colorValues} textInput={textInput} />
     </div>
   );
