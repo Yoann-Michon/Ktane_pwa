@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const nbfils = [3, 4, 5, 6];
 const colors = [
