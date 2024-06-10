@@ -1,5 +1,5 @@
 const Acceuil = () => {
-    const links = [{ path: "/bouton", name: "Bouton" }];
+    const links = [{ path: "/bouton", name: "Bouton" },{ path: "/fils", name: "Fils" },{ path: "/clavier", name: "Clavier" }];
 
     return (
         <div className="links">

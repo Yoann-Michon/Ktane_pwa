@@ -37,8 +37,8 @@ function Button() {
             <li>2 piles et un indicateur allumé avec les lettres FRK</li>
           </ul>
         </div>
-
-        <p>Appuyer et immédiatement relâcher le bouton</p>
+Appuyer et immédiatement relâcher le bouton
+        <p></p>
       </div>
 
       <div className="bande">
