@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import archaicKoppa from "./../assets/symbols/archaic_koppa.jpeg";
 import cyrillicYus from "./../assets/symbols/cyrillic_yus.jpeg";
 import strokeLambda from "./../assets/symbols/stroke_lambda.jpeg";
