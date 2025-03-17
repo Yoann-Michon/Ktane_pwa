@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Grid, Box, Typography, Button, Card, CardMedia, CardActionArea } from "@mui/material";
 import archaicKoppa from "./../assets/symbols/archaic_koppa.jpeg";
 import cyrillicYus from "./../assets/symbols/cyrillic_yus.jpeg";
 import strokeLambda from "./../assets/symbols/stroke_lambda.jpeg";
@@ -33,8 +34,7 @@ const secondColumn = [
 
 const merge = [...firstColumn, ...secondColumn];
 const allSymbol = merge.filter((item, index) => {
-  const currentName = item.name;
-  return index === merge.findIndex((obj) => obj.name === currentName);
+  return index === merge.findIndex((obj) => obj.name === item.name);
 });
 
 const symbolImages: { [key: string]: string } = {
@@ -51,7 +51,7 @@ const symbolImages: { [key: string]: string } = {
   "question mark": questionMark,
 };
 
-const Clavier = () => {
+const Keyboard = () => {
   const [result, setResultValue] = useState<string[]>([]);
   const [sortedSymbols, setSortedSymbols] = useState<{ name: string }[]>([]);
 
@@ -93,90 +93,68 @@ const Clavier = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20,
-        width: "100%",
-      }}
-    >
-      <div>
-        <p style={{ textAlign: "center", marginBottom: 30 }}>
-          Cliquer sur les 4 symboles présents sur le clavier.
-        </p>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
+    <Box sx={{ minHeight: "100vh", bgcolor: "black", color: "white", py: 4, textAlign: "center" }}>
+      <Typography variant="h5" fontWeight="bold" mb={3}>
+        Click on the 4 symbols present on the keyboard.
+      </Typography>
+
+      {/* Symbols Grid */}
+      <Grid container spacing={2} justifyContent="center">
         {allSymbol.map((symbol, index) => (
-          <button
-            key={index}
-            onClick={() => changeValue(symbol.name)}
-            style={{
-              borderWidth: 2,
-              borderColor: result.includes(symbol.name) ? "green" : "black",
-              margin: 10,
-              padding: 0,
-              background: "none",
-              borderStyle: "solid",
-            }}
-          >
-            <img
-              src={symbolImages[symbol.name]}
-              alt={symbol.name}
-              style={{ width: 50, aspectRatio: 1, objectFit: "contain" }}
-            />
-          </button>
+          <Grid item key={index}>
+            <Card
+              sx={{
+                width: 80,
+                bgcolor: result.includes(symbol.name) ? "green" : "gray.900",
+                border: result.includes(symbol.name) ? "2px solid green" : "2px solid white",
+                "&:hover": { transform: "scale(1.05)" },
+              }}
+            >
+              <CardActionArea onClick={() => changeValue(symbol.name)}>
+                <CardMedia
+                  component="img"
+                  image={symbolImages[symbol.name]}
+                  alt={symbol.name}
+                  sx={{ aspectRatio: 1, objectFit: "contain" }}
+                />
+              </CardActionArea>
+            </Card>
+          </Grid>
         ))}
-      </div>
-      <div style={{ flexDirection: "row", margin: 20 }}>
-        <button onClick={reset}>Annuler</button>
-        <div style={{ width: 10 }} />
-        <button onClick={solve}>Valider</button>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          height: 150,
-        }}
-      >
-        <p>Solution:</p>
+      </Grid>
+
+      {/* Buttons */}
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mt: 4 }}>
+        <Button variant="contained" color="secondary" onClick={reset}>
+          Reset
+        </Button>
+        <Button variant="contained" color="primary" onClick={solve}>
+          Validate
+        </Button>
+      </Box>
+
+      {/* Solution Display */}
+      <Box sx={{ mt: 5, textAlign: "center" }}>
+        <Typography variant="h6">Solution:</Typography>
         {sortedSymbols.length > 0 && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              width: "100%",
-            }}
-          >
+          <Grid container spacing={2} justifyContent="center" mt={2}>
             {sortedSymbols.map((symbol, index) => (
-              <img
-                key={index}
-                src={symbolImages[symbol.name]}
-                alt={symbol.name}
-                style={{ width: 50, aspectRatio: 1, objectFit: "contain" }}
-              />
+              <Grid item key={index}>
+                <Card sx={{ width: 80, bgcolor: "gray.800" }}>
+                  <CardMedia
+                    component="img"
+                    image={symbolImages[symbol.name]}
+                    alt={symbol.name}
+                    sx={{ aspectRatio: 1, objectFit: "contain" }}
+                  />
+                </Card>
+              </Grid>
             ))}
-          </div>
+          </Grid>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
-export default Clavier;
+export default Keyboard;

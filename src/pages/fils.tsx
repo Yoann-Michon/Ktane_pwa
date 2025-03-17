@@ -1,197 +1,105 @@
 import { useState } from "react";
+import { Button, TextField, Typography, Box } from "@mui/material";
 
-const nbfils = [3, 4, 5, 6];
-const colors = [
-  { name: "blue" },
-  { name: "red" },
-  { name: "black" },
-  { name: "yellow" },
-  { name: "white" },
-];
+const wireCounts = [3, 4, 5, 6];
+const colors = ["blue", "red", "black", "yellow", "white"];
 
-const Fils = () => {
-  const [nbr, setNbr] = useState(0);
+const Wires = () => {
+  const [numWires, setNumWires] = useState(0);
   const [colorValues, setColorValues] = useState<string[]>([]);
-  const [textInput, setTextInput] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
 
-  const handleChangeValue = (index: number, colorName: string) => {
+  const handleColorChange = (index: number, colorName: string) => {
     const newColorValues = [...colorValues];
     newColorValues[index] = colorName;
     setColorValues(newColorValues);
   };
 
-  const CutWires = ({
-    nbr,
-    colorValues,
-    textInput,
-  }: {
-    nbr: number;
-    colorValues: string[];
-    textInput: string;
-  }) => {
+  const determineWireToCut = () => {
     const blueCount = colorValues.filter((color) => color === "blue").length;
     const redCount = colorValues.filter((color) => color === "red").length;
     const yellowCount = colorValues.filter((color) => color === "yellow").length;
-    //const whiteCount = colorValues.filter((color) => color === "white").length;
     const blackCount = colorValues.filter((color) => color === "black").length;
 
-    const evenOrOdd = (num: number) => (num % 2 === 0 ? "even" : "odd");
-
+    const isOdd = (num: number) => num % 2 !== 0;
     let message = "";
 
-    if (nbr === 3) {
-      if (redCount === 0) {
-        message = "Coupez le 2ème fil";
-      } else if (blueCount > 1) {
-        message = "Coupez le dernier fil bleu";
-      } else {
-        message = "Coupez le dernier fil";
-      }
+    if (numWires === 3) {
+      if (redCount === 0) message = "Cut the 2nd wire";
+      else if (blueCount > 1) message = "Cut the last blue wire";
+      else message = "Cut the last wire";
     }
 
-    if (nbr === 4) {
-      if (redCount > 1 && evenOrOdd(parseInt(textInput)) === "odd") {
-        message = "Coupez le dernier fil rouge";
-      } else if (
-        (redCount === 0 && colorValues[colorValues.length - 1] === "yellow") ||
-        blueCount === 1
-      ) {
-        message = "Coupez le 1er fil";
-      } else if (yellowCount > 1) {
-        message = "Coupez le dernier fil";
-      } else {
-        message = "Coupez le 2ème fil";
-      }
+    if (numWires === 4) {
+      if (redCount > 1 && isOdd(parseInt(serialNumber))) message = "Cut the last red wire";
+      else if ((redCount === 0 && colorValues[colorValues.length - 1] === "yellow") || blueCount === 1) 
+        message = "Cut the 1st wire";
+      else if (yellowCount > 1) message = "Cut the last wire";
+      else message = "Cut the 2nd wire";
     }
 
-    if (nbr === 5) {
-      if (
-        colorValues[colorValues.length - 1] === "black" &&
-        evenOrOdd(parseInt(textInput)) === "odd"
-      ) {
-        message = "Coupez le 4ème fil";
-      } else if (blackCount === 0) {
-        message = "Coupez le 2ème fil";
-      } else {
-        message = "Coupez le 1er fil";
-      }
+    if (numWires === 5) {
+      if (colorValues[colorValues.length - 1] === "black" && isOdd(parseInt(serialNumber))) 
+        message = "Cut the 4th wire";
+      else if (blackCount === 0) message = "Cut the 2nd wire";
+      else message = "Cut the 1st wire";
     }
 
-    return <p>{message}</p>;
-  };
-
-  const handleFils = () => {
-    let elt = [];
-    for (let i = 0; i < nbr; i++) {
-      elt.push(
-        <div
-          key={i}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "300px",
-            alignItems: "center",
-          }}
-        >
-          <span
-            style={{
-              position: "relative",
-              height: "100%",
-              width: "30px",
-              border: "1px solid grey",
-              backgroundColor: colorValues[i] || "transparent",
-            }}
-          ></span>
-          <ColorInputs setColorValue={(colorName: string) => handleChangeValue(i, colorName)} />
-        </div>
-      );
-    }
-    return elt;
-  };
-
-  const DisplayInput = () => {
-    if (nbr === 3 || nbr === 0) {
-      return null;
-    }
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          height: 100,
-          width: 300,
-        }}
-      >
-        <p>Entrez le dernier numéro de série de la bombe</p>
-        <input
-          style={{textAlign: "center" as const,
-            borderWidth: 2,
-            borderColor: "black",
-            width: "50%",}}
-          value={textInput}
-          onChange={(e) => {
-            setTextInput(e.target.value);
-          }}
-        />
-      </div>
-    );
-  };
-
-  const ColorInputs = (props: { setColorValue: (colorName: string) => void }) => {
-    return (
-      <div
-        className="color-inputs"
-        style={{ display: "flex", flexDirection: "column", height: 150 }}
-      >
-        {colors.map((color, index) => (
-          <button
-            key={index}
-            onClick={() => props.setColorValue(color.name)}
-            style={{
-              backgroundColor: color.name,
-              height: "20px",
-              width: "30px",
-              margin: "2px 0",
-            }}
-          />
-        ))}
-      </div>
-    );
+    return message;
   };
 
   return (
-    <div className="str">
-      <div className="str-btn">
-        <h1>Choisir le nombre de fils présent sur le module</h1>
-        {nbfils.map((fil, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              setNbr(fil);
-            }}
-          >
-            {fil}
-          </button>
+    <Box textAlign="center">
+      <Typography variant="h5">Select the number of wires</Typography>
+      {wireCounts.map((count, index) => (
+        <Button key={index} variant="contained" onClick={() => setNumWires(count)} sx={{ m: 1 }}>
+          {count}
+        </Button>
+      ))}
+
+      <Box display="flex" justifyContent="center" mt={2}>
+        {Array.from({ length: numWires }, (_, i) => (
+          <Box key={i} textAlign="center" mx={1}>
+            <Box
+              sx={{
+                width: 30,
+                height: 200,
+                border: "1px solid grey",
+                backgroundColor: colorValues[i] || "transparent",
+              }}
+            />
+            <Box mt={1}>
+              {colors.map((color) => (
+                <Button
+                  key={color}
+                  variant="outlined"
+                  onClick={() => handleColorChange(i, color)}
+                  sx={{ backgroundColor: color, color: "white", m: 0.5 }}
+                >
+                  {color}
+                </Button>
+              ))}
+            </Box>
+          </Box>
         ))}
-      </div>
-      <div
-        className="nbr-str"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          width: 700,
-          justifyContent: "space-evenly",
-          alignItems: "center",
-        }}
-      >
-        {handleFils()}
-      </div>
-      <DisplayInput />
-      <CutWires nbr={nbr} colorValues={colorValues} textInput={textInput} />
-    </div>
+      </Box>
+
+      {numWires >= 4 && (
+        <Box mt={3}>
+          <Typography>Enter the last digit of the bomb's serial number</Typography>
+          <TextField
+            type="text"
+            value={serialNumber}
+            onChange={(e) => setSerialNumber(e.target.value)}
+            sx={{ mt: 1, width: "100px" }}
+            inputProps={{ style: { textAlign: "center" } }}
+          />
+        </Box>
+      )}
+
+      <Typography variant="h6" mt={3}>{determineWireToCut()}</Typography>
+    </Box>
   );
 };
 
-export default Fils;
+export default Wires;

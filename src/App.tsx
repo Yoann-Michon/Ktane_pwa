@@ -3,15 +3,20 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import  Button  from "./pages/bouton";
-import Acceuil from "./pages/acceuil";
+import GameLandingPage from "./pages/acceuil";
 import Fils from "./pages/fils";
 import Clavier from "./pages/clavier";
+import Practice from "./pages/practice";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Acceuil/>,
+      element: <GameLandingPage/>,
+    },
+    {
+      path: "/practice",
+      element: <Practice/>,
     },
     {
       path: "/bouton",

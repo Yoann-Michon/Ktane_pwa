@@ -1,69 +1,79 @@
 import { useState } from "react";
+import { Button, Box, Typography } from "@mui/material";
 
-const cbande = [
-  { value: 4, color: "blue", name: "Bleu" },
-  { value: 5, color: "yellow", name: "Jaune" },
-  { value: 1, color: "transparent", name: "Autre" },
+const colorBands = [
+  { value: 4, color: "blue", name: "Blue" },
+  { value: 5, color: "yellow", name: "Yellow" },
+  { value: 1, color: "transparent", name: "Other" },
 ];
 
-const tbande = (value: number) => {
-  return `Relâcher lorsque le compte à rebours affiche un ${value} à n'importe quelle position`;
+const getReleaseInstruction = (value: number) => {
+  return `Release when the countdown timer displays a ${value} in any position.`;
 };
 
-function Button() {
-  const [bandeValue, setBandeValue] = useState(0);
+function ButtonModule() {
+  const [bandValue, setBandValue] = useState(0);
 
   return (
-    <>
-      <div className="btn-pile">
-        <h2>êtes vous dans l'un des deux cas suivant :</h2>
-        <button
-          className="btn-red-mtn"
-          style={{
+    <Box>
+      <Box textAlign="center" mb={3}>
+        <Typography variant="h6">Are you in one of the following cases?</Typography>
+      </Box>
+
+      <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
+        <Button
+          variant="contained"
+          sx={{
             backgroundColor: "red",
             borderRadius: "50%",
-            height: "200px",
-            aspectRatio: 1,
-            fontSize: "20px",
+            width: "120px",
+            height: "120px",
+            fontSize: "16px",
+            color: "white",
+            "&:hover": { backgroundColor: "darkred" },
           }}
         >
-          {" Maintenir"}
-        </button>
-        <h3>ou</h3>
-        <div className="text">
-          <p>Si il y a </p>
-          <ul>
-            <li>1 pile et bouton marqué « Exploser »</li>
-            <li>2 piles et un indicateur allumé avec les lettres FRK</li>
-          </ul>
-        </div>
-Appuyer et immédiatement relâcher le bouton
-        <p></p>
-      </div>
+          Hold
+        </Button>
+        <Typography variant="h6" mt={2}>or</Typography>
+      </Box>
 
-      <div className="bande">
-        <h2>Cliquer sur la couleur de bande correspondante</h2>
-        {cbande.map((bande) => (
-          <button
-            id={bande.color}
-            key={bande.value}
-            style={{
-              backgroundColor: bande.color,
-              color: bande.color == "yellow" ? "black" : "whitesmoke",
-              width: "200px",
-              height: " 30px",
-            }}
-            onClick={() => {
-              setBandeValue(bande.value);
-            }}
-          >
-            {bande.name}
-          </button>
-        ))}
-        <p>{bandeValue ? tbande(bandeValue) : ""}</p>
-      </div>
-    </>
+      <Typography textAlign="center" mb={1}>If there is:</Typography>
+      <ul>
+        <li>1 battery and the button is labeled "Detonate"</li>
+        <li>2 batteries and a lit indicator with the letters FRK</li>
+      </ul>
+
+      <Typography textAlign="center" fontWeight="bold">
+        Press and immediately release the button
+      </Typography>
+
+      <Box mt={4}>
+        <Typography variant="h6" textAlign="center">Click on the corresponding strip color:</Typography>
+        <Box display="flex" justifyContent="center" gap={2} mt={2}>
+          {colorBands.map((band) => (
+            <Button
+              key={band.value}
+              variant="contained"
+              sx={{
+                backgroundColor: band.color,
+                color: band.color === "yellow" ? "black" : "whitesmoke",
+                width: "100px",
+              }}
+              onClick={() => setBandValue(band.value)}
+            >
+              {band.name}
+            </Button>
+          ))}
+        </Box>
+        {bandValue ? (
+          <Typography textAlign="center" mt={2} fontWeight="bold">
+            {getReleaseInstruction(bandValue)}
+          </Typography>
+        ) : null}
+      </Box>
+    </Box>
   );
 }
 
-export default Button;
+export default ButtonModule;

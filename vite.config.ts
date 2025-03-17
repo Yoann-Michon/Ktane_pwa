@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from "vite-plugin-pwa";
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(),VitePWA({
+  plugins: [tailwindcss(),react(),VitePWA({
     manifest: {
     "name": "Ktane",
     "short_name": "Ktane",
